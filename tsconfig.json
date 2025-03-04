@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2021",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "strictBindCallApply": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "paths": {
+      "@common/*": ["src/common/*"],
+      "@config/*": ["src/config/*"],
+      "@database/*": ["src/database/*"],
+      "@auth/*": ["src/auth/*"],
+      "@payments/*": ["src/payments/*"],
+      "@merchants/*": ["src/merchants/*"],
+      "@transactions/*": ["src/transactions/*"],
+      "@refunds/*": ["src/refunds/*"],
+      "@webhooks/*": ["src/webhooks/*"],
+      "@settlements/*": ["src/settlements/*"],
+      "@disputes/*": ["src/disputes/*"],
+      "@kyc/*": ["src/kyc/*"],
+      "@api-keys/*": ["src/api-keys/*"],
+      "@queue/*": ["src/queue/*"],
+      "@scheduler/*": ["src/scheduler/*"]
+    }
+  },
+  "include": ["src/**/*", "test/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

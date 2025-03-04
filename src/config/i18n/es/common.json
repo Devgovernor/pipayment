@@ -1,0 +1,21 @@
+{
+  "errors": {
+    "unauthorized": "Acceso no autorizado",
+    "forbidden": "Acceso prohibido",
+    "notFound": "Recurso no encontrado",
+    "validation": "Error de validación",
+    "internal": "Error interno del servidor"
+  },
+  "notifications": {
+    "payment": {
+      "success": "Pago exitoso",
+      "failed": "Pago fallido",
+      "pending": "Pago pendiente"
+    },
+    "account": {
+      "created": "Cuenta creada exitosamente",
+      "updated": "Cuenta actualizada exitosamente",
+      "deleted": "Cuenta eliminada exitosamente"
+    }
+  }
+}

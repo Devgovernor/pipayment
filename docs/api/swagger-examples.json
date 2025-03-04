@@ -1,0 +1,96 @@
+{
+  "paths": {
+    "/api/merchant/v1/payments": {
+      "post": {
+        "summary": "Create payment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "simple": {
+                  "value": {
+                    "amount": 100.50,
+                    "currency": "PI",
+                    "description": "Product purchase"
+                  }
+                },
+                "withMetadata": {
+                  "value": {
+                    "amount": 100.50,
+                    "currency": "PI",
+                    "description": "Product purchase",
+                    "metadata": {
+                      "orderId": "ORD123",
+                      "customerEmail": "customer@example.com"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Payment created successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "id": "pmt_123",
+                    "amount": 100.50,
+                    "currency": "PI",
+                    "status": "pending",
+                    "createdAt": "2025-02-15T10:30:00Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 400,
+                  "message": "Validation failed",
+                  "errors": [
+                    {
+                      "property": "amount",
+                      "constraints": {
+                        "min": "Amount must be greater than 0"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Invalid API key"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 429,
+                  "message": "Too Many Requests",
+                  "error": "Rate limit exceeded",
+                  "retryAfter": 60
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

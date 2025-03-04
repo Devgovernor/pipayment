@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Key Rotation Required</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .header {
+      background-color: #FFA000;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .content {
+      padding: 20px;
+      background-color: #fff;
+    }
+    .warning {
+      background-color: #FFF3E0;
+      border: 1px solid #FFE0B2;
+      padding: 15px;
+      border-radius: 4px;
+      margin: 20px 0;
+    }
+    .key-info {
+      background-color: #f5f5f5;
+      padding: 15px;
+      border-radius: 4px;
+      margin: 20px 0;
+    }
+    .button {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #FFA000;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      margin: 20px 0;
+    }
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>API Key Rotation Required</h1>
+    </div>
+    <div class="content">
+      <div class="warning">
+        <strong>Action Required:</strong>
+        <p>Your API key will expire in {{daysUntilExpiry}} days. Please update your integration to use the new API key.</p>
+      </div>
+      
+      <div class="key-info">
+        <h3>Current API Key:</h3>
+        <p><code>{{currentKey}}</code></p>
+        <p>Expires: {{expiryDate}}</p>
+        
+        <h3>New API Key:</h3>
+        <p><code>{{newKey}}</code></p>
+      </div>
+      
+      <h3>Next Steps:</h3>
+      <ol>
+        <li>Update your integration to use the new API key</li>
+        <li>Test your integration with the new key</li>
+        <li>Verify all systems are working correctly</li>
+        <li>The old key will be automatically deactivated on the expiry date</li>
+      </ol>
+      
+      <a href="https://dashboard.pipaymentgateway.com/api-keys" class="button">
+        Manage API Keys
+      </a>
+      
+      <p>For security reasons, this new API key will only be shown once. Please store it securely.</p>
+    </div>
+    <div class="footer">
+      <p>© 2025 Pi Payment Gateway. All rights reserved.</p>
+      <p>This is an automated message, please do not reply.</p>
+    </div>
+  </div>
+</body>
+</html>

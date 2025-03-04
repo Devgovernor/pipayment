@@ -1,0 +1,36 @@
+{
+  "payment": {
+    "success": {
+      "title": "Pago Exitoso",
+      "message": "Su pago de {{amount}} {{currency}} ha sido procesado exitosamente."
+    },
+    "failed": {
+      "title": "Pago Fallido",
+      "message": "Su pago de {{amount}} {{currency}} no pudo ser procesado. Por favor intente nuevamente."
+    },
+    "refund": {
+      "title": "Reembolso Procesado",
+      "message": "Un reembolso de {{amount}} {{currency}} ha sido procesado para su pago."
+    }
+  },
+  "account": {
+    "welcome": {
+      "title": "Bienvenido a Pi Payment Gateway",
+      "message": "Su cuenta ha sido creada exitosamente. ¡Comience a aceptar pagos hoy!"
+    },
+    "verification": {
+      "title": "Cuenta Verificada",
+      "message": "Su cuenta ha sido verificada. Ahora puede procesar pagos."
+    }
+  },
+  "security": {
+    "login": {
+      "title": "Nuevo Inicio de Sesión Detectado",
+      "message": "Se detectó un nuevo inicio de sesión desde {{device}} en {{location}}."
+    },
+    "password_changed": {
+      "title": "Contraseña Cambiada",
+      "message": "Su contraseña fue cambiada exitosamente. Si no realizó este cambio, por favor contacte a soporte."
+    }
+  }
+}

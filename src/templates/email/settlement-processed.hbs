@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settlement Processed</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .header {
+      background-color: #00897B;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .content {
+      padding: 20px;
+      background-color: #fff;
+    }
+    .amount {
+      font-size: 24px;
+      font-weight: bold;
+      color: #00897B;
+      text-align: center;
+      margin: 20px 0;
+    }
+    .details {
+      background-color: #f5f5f5;
+      padding: 15px;
+      border-radius: 4px;
+      margin: 20px 0;
+    }
+    .details-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 5px 0;
+    }
+    .summary {
+      background-color: #E0F2F1;
+      border: 1px solid #B2DFDB;
+      padding: 15px;
+      border-radius: 4px;
+      margin: 20px 0;
+    }
+    .button {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #00897B;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      margin: 20px 0;
+    }
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Settlement Processed</h1>
+    </div>
+    <div class="content">
+      <div class="amount">
+        {{amount}} {{currency}}
+      </div>
+      
+      <div class="details">
+        <div class="details-row">
+          <span>Settlement ID:</span>
+          <span>{{settlementId}}</span>
+        </div>
+        <div class="details-row">
+          <span>Period:</span>
+          <span>{{periodStart}} - {{periodEnd}}</span>
+        </div>
+        <div class="details-row">
+          <span>Status:</span>
+          <span style="color: #00897B;">Completed</span>
+        </div>
+      </div>
+      
+      <div class="summary">
+        <h3>Settlement Summary</h3>
+        <div class="details-row">
+          <span>Total Payments:</span>
+          <span>{{totalPayments}}</span>
+        </div>
+        <div class="details-row">
+          <span>Total Refunds:</span>
+          <span>{{totalRefunds}}</span>
+        </div>
+        <div class="details-row">
+          <span>Fees:</span>
+          <span>{{fees}} {{currency}}</span>
+        </div>
+        <div class="details-row">
+          <span>Net Amount:</span>
+          <span><strong>{{netAmount}} {{currency}}</strong></span>
+        </div>
+      </div>
+      
+      <p>Your settlement has been processed and the funds will be transferred to your bank account within 1-2 business days.</p>
+      
+      <a href="https://dashboard.pipaymentgateway.com/settlements/{{settlementId}}" class="button">
+        View Settlement Details
+      </a>
+    </div>
+    <div class="footer">
+      <p>© 2025 Pi Payment Gateway. All rights reserved.</p>
+      <p>This is an automated message, please do not reply.</p>
+    </div>
+  </div>
+</body>
+</html>

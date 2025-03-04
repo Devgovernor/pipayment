@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pi-payment-gateway
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pi-payment-gateway
+  template:
+    metadata:
+      labels:
+        app: pi-payment-gateway
+    spec:
+      containers:
+        - name: pi-payment-gateway
+          image: pi-payment-gateway:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: DB_HOST
+          resources:
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health/db
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10

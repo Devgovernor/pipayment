@@ -1,0 +1,21 @@
+{
+  "errors": {
+    "unauthorized": "Unauthorized access",
+    "forbidden": "Access forbidden",
+    "notFound": "Resource not found",
+    "validation": "Validation error",
+    "internal": "Internal server error"
+  },
+  "notifications": {
+    "payment": {
+      "success": "Payment successful",
+      "failed": "Payment failed",
+      "pending": "Payment pending"
+    },
+    "account": {
+      "created": "Account created successfully",
+      "updated": "Account updated successfully",
+      "deleted": "Account deleted successfully"
+    }
+  }
+}

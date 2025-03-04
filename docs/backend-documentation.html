@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pi Payment Gateway Backend Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1, h2, h3, h4 {
+            color: #2c3e50;
+        }
+        h1 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #16a085;
+        }
+        .module {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .endpoint {
+            background: #fff;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin: 10px 0;
+        }
+        pre {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            background: #f1f1f1;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .method {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        .response {
+            background: #edf2f7;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .implementation {
+            background: #fff;
+            padding: 15px;
+            border-left: 4px solid #16a085;
+            margin: 10px 0;
+        }
+        .note {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pi Payment Gateway Backend Documentation</h1>
+        
+        <section class="module">
+            <h2>1. Authentication Module</h2>
+            <p>Handles user authentication and authorization with role-based access control.</p>
+            
+            <h3>Implementation Details</h3>
+            <div class="implementation">
+                <h4>JWT Authentication</h4>
+                <pre>
+// Example JWT Strategy Implementation
+@Injectable()
+export class JwtStrategy extends PassportStrategy(Strategy) {
+  constructor(private configService: ConfigService) {
+    super({
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      ignoreExpiration: false,
+      secretOrKey: configService.get<string>('app.jwt.secret'),
+    });
+  }
+
+  async validate(payload: any) {
+    return {
+      id: payload.sub,
+      email: payload.email,
+      role: payload.role,
+    };
+  }
+}</pre>
+            </div>
+
+            <h3>API Endpoints</h3>
+            <div class="endpoint">
+                <p><span class="method">POST</span> <code>/auth/login</code></p>
+                <p>Request:</p>
+                <pre>
+{
+  "email": "merchant@example.com",
+  "password": "secure_password"
+}</pre>
+                <p>Response:</p>
+                <pre>
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "token_type": "Bearer"
+}</pre>
+            </div>
+
+            <div class="endpoint">
+                <p><span class="method">GET</span> <code>/auth/sessions/active</code></p>
+                <p>Response:</p>
+                <pre>
+{
+  "data": [
+    {
+      "id": "session_id",
+      "deviceInfo": {
+        "browser": "Chrome",
+        "os": "Windows"
+      },
+      "lastActivity": "2025-02-15T10:30:00Z"
+    }
+  ]
+}</pre>
+            </div>
+
+            <h3>Features</h3>
+            <ul>
+                <li>JWT-based authentication with refresh tokens</li>
+                <li>Role-based access control (Super Admin, Admin, Merchant)</li>
+                <li>Session management with device tracking</li>
+                <li>Two-factor authentication (2FA) with OTP</li>
+                <li>API key authentication for merchant endpoints</li>
+            </ul>
+
+            <div class="note">
+                <strong>Security Note:</strong> All passwords are hashed using bcrypt before storage. JWT tokens expire after 1 hour by default.
+            </div>
+        </section>
+
+        <section class="module">
+            <h2>2. Payments Module</h2>
+            <p>Core payment processing functionality with comprehensive transaction handling.</p>
+
+            <h3>Implementation Details</h3>
+            <div class="implementation">
+                <h4>Payment Processing Flow</h4>
+                <pre>
+@Injectable()
+export class PaymentProcessorService {
+  async processPayment(payment: Payment): Promise<Payment> {
+    // 1. Validate payment
+    // 2. Check fraud score
+    const riskScore = await this.fraudPreventionService.calculateRiskScore(payment);
+    
+    if (riskScore.score > 0.7) {
+      payment.status = PaymentStatus.FAILED;
+      return payment;
+    }
+
+    // 3. Process with Pi Network
+    const piPayment = await this.piNetworkService.createPayment(
+      payment.amount,
+      payment.description
+    );
+
+    // 4. Update payment status
+    payment.status = PaymentStatus.PROCESSING;
+    payment.metadata.piPaymentId = piPayment.id;
+
+    return payment;
+  }
+}</pre>
+            </div>
+
+            <h3>API Endpoints</h3>
+            <div class="endpoint">
+                <p><span class="method">POST</span> <code>/api/merchant/v1/payments</code></p>
+                <p>Request:</p>
+                <pre>
+{
+  "amount": 100.50,
+  "currency": "PI",
+  "description": "Product purchase",
+  "metadata": {
+    "orderId": "ORD123"
+  }
+}</pre>
+                <p>Response:</p>
+                <pre>
+{
+  "data": {
+    "id": "pmt_123",
+    "amount": 100.50,
+    "currency": "PI",
+    "status": "pending",
+    "createdAt": "2025-02-15T10:30:00Z"
+  }
+}</pre>
+            </div>
+
+            <h3>Features</h3>
+            <ul>
+                <li>Real-time payment processing</li>
+                <li>Multiple payment methods support</li>
+                <li>Automatic payment status updates</li>
+                <li>Payment splitting capabilities</li>
+                <li>Refund handling</li>
+                <li>Detailed transaction history</li>
+            </ul>
+
+            <div class="note">
+                <strong>Integration Note:</strong> Payments are processed through the Pi Network API. Ensure proper error handling and retry mechanisms.
+            </div>
+        </section>
+
+        <section class="module">
+            <h2>3. Fraud Prevention Module</h2>
+            <p>Advanced fraud detection and prevention system using machine learning.</p>
+
+            <h3>Implementation Details</h3>
+            <div class="implementation">
+                <h4>Risk Scoring System</h4>
+                <pre>
+@Injectable()
+export class MlFraudDetectionService {
+  async predictFraud(payment: Payment): Promise<number> {
+    const features = [
+      payment.amount,
+      new Date(payment.createdAt).getHours(),
+      payment.metadata?.attemptCount || 0,
+      payment.metadata?.ipReputation || 0,
+      payment.metadata?.deviceTrustScore || 0,
+    ];
+
+    return this.model.predict([features])[0];
+  }
+}</pre>
+            </div>
+
+            <h3>Features</h3>
+            <ul>
+                <li>Real-time risk scoring</li>
+                <li>Machine learning-based fraud detection</li>
+                <li>IP reputation checking</li>
+                <li>Device fingerprinting</li>
+                <li>Velocity checking</li>
+                <li>Pattern recognition</li>
+            </ul>
+
+            <div class="note">
+                <strong>Performance Note:</strong> Risk scoring is performed asynchronously to minimize impact on payment processing time.
+            </div>
+        </section>
+
+        <section class="module">
+            <h2>4. Analytics Module</h2>
+            <p>Comprehensive analytics and reporting system.</p>
+
+            <h3>Implementation Details</h3>
+            <div class="implementation">
+                <h4>Revenue Analytics</h4>
+                <pre>
+@Injectable()
+export class AnalyticsService {
+  async getRevenueByPeriod(
+    period: 'day' | 'week' | 'month',
+    merchantId?: string
+  ) {
+    return this.dataSource
+      .createQueryBuilder()
+      .select([
+        'DATE_TRUNC(:period, created_at) as period',
+        'SUM(amount) as revenue',
+        'COUNT(*) as transaction_count',
+      ])
+      .from('payments', 'p')
+      .where('status = :status', { status: 'completed' })
+      .groupBy('period')
+      .orderBy('period', 'DESC')
+      .setParameter('period', period)
+      .getRawMany();
+  }
+}</pre>
+            </div>
+
+            <h3>API Endpoints</h3>
+            <div class="endpoint">
+                <p><span class="method">GET</span> <code>/admin/analytics/revenue?period=month</code></p>
+                <p>Response:</p>
+                <pre>
+{
+  "data": [
+    {
+      "period": "2025-02",
+      "revenue": 15000.50,
+      "transaction_count": 150
+    }
+  ]
+}</pre>
+            </div>
+
+            <h3>Features</h3>
+            <ul>
+                <li>Real-time analytics dashboard</li>
+                <li>Custom report generation</li>
+                <li>Revenue tracking and forecasting</li>
+                <li>Transaction analysis</li>
+                <li>Merchant performance metrics</li>
+            </ul>
+        </section>
+
+        <section class="module">
+            <h2>5. Marketplace Module</h2>
+            <p>Multi-seller marketplace functionality with commission handling.</p>
+
+            <h3>Implementation Details</h3>
+            <div class="implementation">
+                <h4>Commission Calculation</h4>
+                <pre>
+@Injectable()
+export class MarketplaceService {
+  async processMarketplacePayment(
+    merchant: Merchant,
+    paymentDto: MarketplacePaymentDto
+  ) {
+    const seller = await this.findSeller(paymentDto.sellerId);
+    const commission = (paymentDto.amount * seller.commissionRate) / 100;
+    
+    // Create payment splits
+    await this.paymentSplitService.createSplit(payment, {
+      recipientId: seller.id,
+      amount: paymentDto.amount - commission,
+      currency: paymentDto.currency,
+    });
+
+    return payment;
+  }
+}</pre>
+            </div>
+
+            <h3>Features</h3>
+            <ul>
+                <li>Seller management</li>
+                <li>Product catalog</li>
+                <li>Order processing</li>
+                <li>Commission handling</li>
+                <li>Seller payouts</li>
+                <li>Dispute resolution</li>
+            </ul>
+        </section>
+    </div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+module.exports = {
+  moduleFileExtensions: ['js', 'json', 'ts'],
+  rootDir: 'src',
+  testRegex: '.*\\.spec\\.ts$',
+  transform: {
+    '^.+\\.(t|j)s$': 'ts-jest',
+  },
+  collectCoverageFrom: ['**/*.(t|j)s'],
+  coverageDirectory: '../coverage',
+  testEnvironment: 'node',
+  moduleNameMapper: {
+    '^@common/(.*)$': '<rootDir>/common/$1',
+    '^@config/(.*)$': '<rootDir>/config/$1',
+    '^@database/(.*)$': '<rootDir>/database/$1',
+    '^@auth/(.*)$': '<rootDir>/auth/$1',
+    '^@payments/(.*)$': '<rootDir>/payments/$1',
+    '^@merchants/(.*)$': '<rootDir>/merchants/$1',
+    '^@transactions/(.*)$': '<rootDir>/transactions/$1',
+    '^@refunds/(.*)$': '<rootDir>/refunds/$1',
+    '^@webhooks/(.*)$': '<rootDir>/webhooks/$1',
+    '^@settlements/(.*)$': '<rootDir>/settlements/$1',
+    '^@disputes/(.*)$': '<rootDir>/disputes/$1',
+    '^@kyc/(.*)$': '<rootDir>/kyc/$1',
+    '^@api-keys/(.*)$': '<rootDir>/api-keys/$1',
+    '^@queue/(.*)$': '<rootDir>/queue/$1',
+    '^@scheduler/(.*)$': '<rootDir>/scheduler/$1',
+  },
+};
